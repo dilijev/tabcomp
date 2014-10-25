@@ -56,8 +56,10 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Compress source code indentation.')
-    parser.add_argument('source', help='The source file. The output will be written on source.tc.')
-    parser.add_argument('output', nargs='?', help='The file the output will be written to.',
+    parser.add_argument('source',
+            help='The source file. If output not specified, the output will be written on source.tc.')
+    parser.add_argument('output', nargs='?',
+            help='[Optional.] The file the output will be written to, if specified.',
             default=None)
     parser.add_argument('-v', '--verbose', action='store_true')
 

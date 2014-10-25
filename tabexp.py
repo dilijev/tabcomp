@@ -42,9 +42,9 @@ def main(args):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Expand source code indentation.')
-    parser.add_argument('source', help='The file to expand.')
-    parser.add_argument('output', help='The output of this command.')
+    parser = argparse.ArgumentParser(description='Expand source code indentation. Ensure that source is a file compressed using tabcomp.py.')
+    parser.add_argument('source', help='The compressed file to expand.')
+    parser.add_argument('output', help='The output file where the tab-expanded code should be written.')
 
     args = parser.parse_args()
 
