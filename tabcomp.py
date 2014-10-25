@@ -23,8 +23,6 @@ def main(args):
 
         if state == State.PREFIX_SPACES:
             if not c.isspace():
-                state = State.TEXT
-
                 if prefix.startswith(curr_line_prefix):
                     diff = len(prefix) - len(curr_line_prefix)
                     if diff > 0:
@@ -32,6 +30,9 @@ def main(args):
                         w.write(chr(diff))
                         # w.write(str(bytes(int(x,0) for x in ['\x7f', diff])))
                         print('backing out {0} indent chars'.format(diff))
+
+                state = State.TEXT
+                w.write(c)
 
             elif c == '\n':
                 w.write(c)
@@ -43,7 +44,7 @@ def main(args):
                 if not prefix.startswith(curr_line_prefix):
                     w.write(c)
 
-        if state == State.TEXT:
+        elif state == State.TEXT:
             if c == '\n':
                 state = State.PREFIX_SPACES
                 prefix = curr_line_prefix
