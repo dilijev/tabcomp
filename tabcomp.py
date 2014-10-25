@@ -11,7 +11,7 @@ class State(object):
 
 def main(args):
     f = open(args.source, 'rb')
-    w = open(args.source + '.tc', 'wb')
+    w = open(args.output, 'wb')
 
     prefix = ''
     curr_line_prefix = ''
@@ -28,8 +28,8 @@ def main(args):
                     if diff > 0:
                         w.write('\x7f')
                         w.write(chr(diff))
-                        # w.write(str(bytes(int(x,0) for x in ['\x7f', diff])))
-                        print('backing out {0} indent chars'.format(diff))
+                        if args.verbose:
+                            print('backing out {0} indent chars'.format(diff))
 
                 state = State.TEXT
                 w.write(c)
@@ -37,6 +37,7 @@ def main(args):
             elif c == '\n':
                 w.write(c)
                 # if there is no whitespace on a line, don't count it for the current indent level
+                # TODO make this so that if there is nothing besides /\s\+/ on a line, don't count it
                 curr_line_prefix = ''
 
             else:
@@ -56,8 +57,16 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Compress source code indentation.')
     parser.add_argument('source', help='The source file. The output will be written on source.tc.')
+    parser.add_argument('output', nargs='?', help='The file the output will be written to.',
+            default=None)
+    parser.add_argument('-v', '--verbose', action='store_true')
 
     args = parser.parse_args()
+    if not args.output:
+        args.output = args.source + ".tc"
+
+    if args.verbose:
+        print('Reading "{0}" and writing output to "{1}"'.format(args.source, args.output))
 
     main(args)
 
